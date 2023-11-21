@@ -1,0 +1,15 @@
+body {
+    background-color: aqua;
+}
+
+li {
+    background-color:blue;
+    color:white;
+    width:fit-content;
+    padding:5px;
+
+}
+
+li:hover {
+    background-color:grey;
+}
