@@ -1,14 +1,13 @@
 var questionEl = document.querySelector('.question');
 var questionH2 = questionEl.querySelector(':scope > h2');
 var questionOl = document.querySelector('ol');
-var questionP = document.querySelector('p');
+var questionP = document.querySelector('.intro-text');
+var timerSpan = document.querySelector('.time')
 
-
+// var demo = document.getElementById
 var startButton = document.querySelector('#start');
 
 startQuiz()
-
-var questionCount = 0;
 
 function startQuiz() {
     startButton.addEventListener('click', function(event) {
@@ -18,13 +17,20 @@ function startQuiz() {
             "style",
             "display: none;"
         )
+        timer();
         newQuestion();
     });    
 }
 
+var questionCount = 0;
+var userTotal = 0;
+// var nextButton = document.createElement('button');
+// nextButton.textContent = "Next Question";
+// nextButton.setAttribute("style", "display: none;")
+
 function newQuestion() {
 
-    questionOl.innerHTML = '';
+    questionOl.textContent = ''; 
     var currentQuestion = allQuestions[questionCount];
     questionH2.textContent = currentQuestion.q;
     var answers = [currentQuestion.a1, currentQuestion.a2, currentQuestion.a3, currentQuestion.a4];
@@ -33,45 +39,94 @@ function newQuestion() {
         var listItem = document.createElement("li");
         listItem.textContent = answers[i];
         questionOl.appendChild(listItem);
+
+        listItem.addEventListener('click', function(event) { 
+            event.preventDefault();
+
+            if (this.textContent === currentQuestion.correct) {
+                console.log("Correct Answer");
+                userTotal = userTotal + 10;
+                console.log(userTotal)
+            }
+
+            if (questionCount > allQuestions.length - 1) {
+                questionCount++;
+                newQuestion();
+            } else {
+                console.log("Quiz complete")
+            }
+        });
+
     }
 
-    var nextButton = document.createElement('button');
-    questionEl.appendChild(nextButton);
-    nextButton.addEventListener('click', function(event) { 
-        event.preventDefault();
-        questionCount++;
-        newQuestion();
+}
 
-    });
+function timer() {
+    var timeLeft = 10;
+
+    timerSpan.textContent = timeLeft;
+    // document.appendChild(timerSpan);
+
+    var timeInterval = setInterval(function() {
+        timeLeft--;
+        timerSpan.textContent = timeLeft;
+
+        if (timeLeft === 0) {
+            timerSpan.textContent = '0'
+            clearInterval(timeInterval);
+        }
+    }, 1000);
+
 }
 
 var question1 = {
-    q: "What is jquery?",
-    a1: "Answer 1",
-    a2: "Answer 2",
-    a3: "Answer 3",
-    a4: "Answer 4",
+    q: "Commonly used data types DO NOT include:",
+    a1: "strings",
+    a2: "boolean",
+    a3: "alerts",
+    a4: "numbers",
+    correct: "alerts",
 }
 
 var question2 = {
-    q: "What is php?",
-    a1: "New Answer 1",
-    a2: "New Answer 2",
-    a3: "New Answer 3",
-    a4: "New Answer 4",
+    q: "The condition in an if / else statement is enclosed within ___.",
+    a1: "quotes",
+    a2: "curly brackets",
+    a3: "parentheses",
+    a4: "square brackets",
+    correct: "parentheses",
 }
 
-var allQuestions = [question1, question2];
+var question3 = {
+    q: "Arrays in JavaScript can be used to store ___.",
+    a1: "numbers and strings",
+    a2: "other arrays",
+    a3: "booleans",
+    a4: "all of the above",
+    correct: "all of the above",
+}
+
+var question4 = {
+    q: "String values must be enclosed within ___ when being assigned to variables.",
+    a1: "commas",
+    a2: "curly brackets",
+    a3: "quotes",
+    a4: "parentheses",
+    correct: "quotes",
+}
+
+var question5 = {
+    q: "A very useful tool used during development and debugging for printing content to the debugger is ___.",
+    a1: "JavaScript",
+    a2: "terminal/bash",
+    a3: "for loops",
+    a4: "console log",
+    correct: "console log",
+}
 
 
 
-    // questionH2.textContent = question1.q;
 
-    // questionOl.appendChild(li1);
-    // questionOl.appendChild(li2);
-    // questionOl.appendChild(li3);
-    // questionOl.appendChild(li4);
-    // li1.textContent = question1.a1;
-    // li2.textContent = "Question 2";
-    // li3.textContent = "Question 3";
-    // li4.textContent = "Question 4";
+
+var allQuestions = [question1, question2, question3];
+

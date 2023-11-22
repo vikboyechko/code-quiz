@@ -1,15 +1,71 @@
 body {
-    background-color: aqua;
+    background-color: rgb(238, 242, 242);
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+main {
+    display: grid;
+    grid-template-columns: 1fr 20px 4fr 20px 1fr;
 }
 
+section {
+    padding-top:5%;
+}
+
+h2 {
+    text-align: center;
+
+}
+
+
 li {
-    background-color:blue;
+    background-color:#472e71;
     color:white;
     width:fit-content;
     padding:5px;
 
 }
 
+li::before {
+    background-color: #472e71;
+    padding-left: 30px;
+}
+
 li:hover {
     background-color:grey;
+}
+
+button {
+    justify-self: center;
+    text-align: center;
+    background-color: #472e71;
+    color: white;
+    padding: 5px 10px;
+    border:none;
+    margin-top: 15px;
+    font-size:medium;
+    border-radius: 5px;
+
+}
+
+button:hover {
+    background-color: red;
+}
+
+.question p {
+    text-align: center;
+}
+
+.view-highscores {
+    grid-column-start: 1;
+    justify-self: center;
+}
+
+.question {
+    grid-column-start: 3;
+    grid-column-end: 5;
+    align-self: center;
+}
+.timer {
+    grid-column-start: 5;
+    justify-self: center;
 }
