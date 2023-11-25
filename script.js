@@ -49,7 +49,7 @@ function newQuestion() {
                 console.log(userTotal)
             }
 
-            if (questionCount > allQuestions.length - 1) {
+            if (questionCount < allQuestions.length - 1) {
                 questionCount++;
                 newQuestion();
             } else {
@@ -128,5 +128,5 @@ var question5 = {
 
 
 
-var allQuestions = [question1, question2, question3];
+var allQuestions = [question1, question2, question3, question4, question5];
 

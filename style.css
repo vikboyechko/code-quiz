@@ -4,37 +4,59 @@ body {
 }
 main {
     display: grid;
-    grid-template-columns: 1fr 20px 4fr 20px 1fr;
+    grid-template-columns: 1.5fr 10px 4fr 10px 1.5fr;
 }
 
 section {
     padding-top:5%;
+    display: grid;
+    grid-template-columns: 1fr 4fr 1fr;
+    padding-bottom: 50px;
 }
+
+
 
 h2 {
     text-align: center;
+    grid-column-start: 2;
 
 }
 
 
-li {
-    background-color:#472e71;
-    color:white;
-    width:fit-content;
+ol {
+    grid-column-start: 2;
+    align-self: center;
+    justify-self: center;
+    /* text-align: left; */
+    list-style-type: decimal;
+}
+
+ol li::marker {
+    color: black;       /* Ensures the marker (number) is black */
+    font-size: 1em;     /* Adjust the size of the marker as needed */
+
+}
+
+ol li {
+    /* background-color:#472e71; */
+    /* color:white; */
     padding:5px;
-
 }
 
-li::before {
-    background-color: #472e71;
-    padding-left: 30px;
-}
 
 li:hover {
     background-color:grey;
+    border-radius: 5px;
+    color: white;
+}
+
+.intro-text {
+    grid-column-start: 3;
+    align-self: center;
 }
 
 button {
+    grid-column-start: 2;
     justify-self: center;
     text-align: center;
     background-color: #472e71;
@@ -42,7 +64,7 @@ button {
     padding: 5px 10px;
     border:none;
     margin-top: 15px;
-    font-size:medium;
+    font-size: large;
     border-radius: 5px;
 
 }
@@ -53,19 +75,35 @@ button:hover {
 
 .question p {
     text-align: center;
+    grid-column-start: 2;
 }
 
 .view-highscores {
     grid-column-start: 1;
     justify-self: center;
+    background-color: red;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+.view-highscores:hover {
+    background-color: #666;
 }
 
 .question {
     grid-column-start: 3;
-    grid-column-end: 5;
     align-self: center;
+    margin-top: -50px;
+
 }
+
 .timer {
     grid-column-start: 5;
     justify-self: center;
+    background-color: blue;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 5px;
 }
+
