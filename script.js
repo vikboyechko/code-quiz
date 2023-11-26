@@ -136,7 +136,7 @@ function submitScore() {
 }
 
 function timer() {
-    timeLeft = 10;
+    timeLeft = 100;
 
     timerSpan.textContent = timeLeft;
 
