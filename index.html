@@ -19,16 +19,22 @@
             <p class="intro-text">Try to answer the following code-related questions within the time limit.<br><br>
                 Correct answers receive 10 points, and the total time left will be added to the final score.<br><br>
                 Incorrect answers will penalize your score by 10 points, and your time left will be reduced 10 seconds.</p>
+
             <ol id="highscores"></ol>
-            <button id="clearscores">Clear High Scores</button>
+            <ol id="highscores-aftergame"></ol>
+            <ol id="questionOl"></ol>
+            <button id="clearscores">Clear Scores</button>
             <button id="start">Begin Quiz</button>
-            <ol>
-            </ol>
+            <button id="showscore">See High Scores</button>
+
+
             <form class="form">
                 <label for="initials">Enter Initials:</label>
-                <input type="text" id="initials" name="initials">
+                <input type="text" id="initials" name="initials" maxlength="3">
                 <button type="submit" id="submit">Submit</button>
             </form>
+
+            <button id="goback">Go Home</button>
 
         </section>
 
