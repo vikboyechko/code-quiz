@@ -2,9 +2,20 @@ var questionEl = document.querySelector('.question');
 var questionH2 = questionEl.querySelector(':scope > h2');
 var questionOl = document.querySelector('ol');
 var questionP = document.querySelector('.intro-text');
-var timerSpan = document.querySelector('.time')
+var timerSpan = document.querySelector('.time');
+var form = document.querySelector('.form');
+var submit = document.querySelector("#submit")
+var highscores = document.querySelector("#highscores");
+var viewHighScores = document.querySelector(".view-highscores")
+var clearScoresButton = document.querySelector("#clearscores");
+var questionCount = 0;
+var userTotal = 0;
+var timeLeft;
+var timeInterval;
 
-// var demo = document.getElementById
+form.style.display = "none";
+clearScoresButton.style.display = "none";
+viewHighScores.addEventListener("click", showScores)
 var startButton = document.querySelector('#start');
 
 startQuiz()
@@ -22,12 +33,6 @@ function startQuiz() {
     });    
 }
 
-var questionCount = 0;
-var userTotal = 0;
-// var nextButton = document.createElement('button');
-// nextButton.textContent = "Next Question";
-// nextButton.setAttribute("style", "display: none;")
-
 function newQuestion() {
 
     questionOl.textContent = ''; 
@@ -44,39 +49,101 @@ function newQuestion() {
             event.preventDefault();
 
             if (this.textContent === currentQuestion.correct) {
-                console.log("Correct Answer");
                 userTotal = userTotal + 10;
-                console.log(userTotal)
             }
 
             if (questionCount < allQuestions.length - 1) {
                 questionCount++;
                 newQuestion();
             } else {
-                console.log("Quiz complete")
+                clearInterval(timeInterval);
+                questionH2.textContent = "All done!";
+                var timeTally = timeLeft > 0 ? timeLeft : 0;
+                userTotal = userTotal + timeTally;
+                questionP.textContent = "Your final score is " + userTotal + ".";
+                questionOl.style.display = "none";
+                form.style.display = "block";
+                submitScore();
             }
         });
-
     }
+}
+
+function showScores() {
+    questionH2.textContent = "High Scores";
+    form.style.display = "none";
+    highscores.innerHTML = ""; // Clear existing scores first
+
+    // Get scores from localStorage
+
+    var storedScores = JSON.parse(localStorage.getItem("userScore") || "[]");
+
+    if (storedScores.length > 0) {
+        // Add each score to a list
+        for (var i = 0; i < storedScores.length; i++) {
+            
+            var scoreItem = document.createElement("li");
+            scoreItem.textContent = storedScores[i].initials + " - " + storedScores[i].score;
+            highscores.appendChild(scoreItem);
+        }
+        clearScoresButton.style.display = "block";
+    } else {
+        highscores.textContent = "No high scores yet.";
+    }
+
+    // Show user's most recent score
+    questionP.textContent = "Your latest score: " + userTotal;
+    clearScoresButton.addEventListener("click", function() {
+        localStorage.removeItem("userScore");
+        highscores.textContent = "No high scores yet.";
+    })
 
 }
 
+
+function submitScore() {
+    submit.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        var initials = document.querySelector("#initials").value.toUpperCase().trim();
+        if (!initials) {
+            alert("Please enter your initials!");
+            return;
+        }
+
+        var newScore = {
+            initials: initials,
+            score: userTotal,
+        };
+
+        var storedScoresString = localStorage.getItem("userScore");
+        var storedScores = storedScoresString ? JSON.parse(storedScoresString) : [];
+
+
+        storedScores.push(newScore);
+        localStorage.setItem("userScore", JSON.stringify(storedScores));
+
+        showScores();
+    });
+}
+
 function timer() {
-    var timeLeft = 10;
+    timeLeft = 30;
 
     timerSpan.textContent = timeLeft;
-    // document.appendChild(timerSpan);
 
-    var timeInterval = setInterval(function() {
+    timeInterval = setInterval(function() {
         timeLeft--;
         timerSpan.textContent = timeLeft;
 
-        if (timeLeft === 0) {
-            timerSpan.textContent = '0'
+        if (timeLeft <= 0) {
             clearInterval(timeInterval);
+            timerSpan.textContent = '0';
+            questionH2.textContent = "Time's up!";
+            questionOl.style.display = "none";
+            form.style.display = "block";
         }
     }, 1000);
-
 }
 
 var question1 = {
@@ -123,10 +190,6 @@ var question5 = {
     a4: "console log",
     correct: "console log",
 }
-
-
-
-
 
 var allQuestions = [question1, question2, question3, question4, question5];
 
