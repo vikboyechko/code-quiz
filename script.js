@@ -34,7 +34,8 @@ function startQuiz() {
 startQuiz()
 
 function newQuestion() {
-    questionOl.textContent = ''; 
+    questionOl.textContent = '';
+    questionP.textContent = ''; 
     var currentQuestion = allQuestions[questionCount];
     questionH2.textContent = currentQuestion.q;
     var answers = [currentQuestion.a1, currentQuestion.a2, currentQuestion.a3, currentQuestion.a4];
@@ -49,27 +50,34 @@ function newQuestion() {
 
             if (this.textContent === currentQuestion.correct) {
                 userTotal += 10;
+                questionP.textContent = "Correct!"
+                
             }
 
             if (this.textContent !== currentQuestion.correct) {
                 userTotal -= 10;
                 timeLeft -= 10;
+                questionP.textContent = "Wrong!"
             }
 
             if (questionCount < allQuestions.length - 1) {
                 questionCount++;
-                newQuestion();
+                setTimeout(function() {
+                    newQuestion();
+                }, 2000);
             } else {
-                clearInterval(timeInterval);
-                questionH2.textContent = "All done!";
-                var timeTally = timeLeft > 0 ? timeLeft : 0;
-                userTotal = userTotal + timeTally;
-                questionP.textContent = "Your final score is " + userTotal + ".";
-                questionOl.style.display = "none";
-                form.style.display = "block";
-                submitScore();
-            }
-        });
+                setTimeout(function() {
+                    clearInterval(timeInterval);
+                    questionH2.textContent = "All done!";
+                    var timeTally = timeLeft > 0 ? timeLeft : 0;
+                    userTotal = userTotal + timeTally;
+                    questionP.textContent = "Your final score is " + userTotal + ".";
+                    questionOl.style.display = "none";
+                    form.style.display = "block";
+                    submitScore();
+                }, 2000);
+                }
+            });
     }
 }
 
