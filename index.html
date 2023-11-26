@@ -9,14 +9,16 @@
 <body>
     <main>
         <section class="view-highscores">
-            <p>View Highscores</p>
+            <p><span>View</span><span>Highscores</span></p>
         </section>
         <section class="timer">
-            <p><span>Time Left: </span><span class="time"></span></p>
+            <span>Timer: </span><span class="time"></span>
         </section>
         <section class="question">
             <h2>Coding Quiz Challenge</h2>
-            <p class="intro-text">Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
+            <p class="intro-text">Try to answer the following code-related questions within the time limit.<br><br>
+                Correct answers receive 10 points, and the total time left will be added to the final score.<br><br>
+                Incorrect answers will penalize your score by 10 points, and your time left will be reduced 10 seconds.</p>
             <ol id="highscores"></ol>
             <button id="clearscores">Clear High Scores</button>
             <button id="start">Begin Quiz</button>

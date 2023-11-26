@@ -3,6 +3,7 @@ var questionH2 = questionEl.querySelector(':scope > h2');
 var questionOl = document.querySelector('ol');
 var questionP = document.querySelector('.intro-text');
 var timerSpan = document.querySelector('.time');
+var startButton = document.querySelector('#start');
 var form = document.querySelector('.form');
 var submit = document.querySelector("#submit")
 var highscores = document.querySelector("#highscores");
@@ -15,10 +16,7 @@ var timeInterval;
 
 form.style.display = "none";
 clearScoresButton.style.display = "none";
-viewHighScores.addEventListener("click", showScores)
-var startButton = document.querySelector('#start');
-
-startQuiz()
+viewHighScores.addEventListener("click", showScores);
 
 function startQuiz() {
     startButton.addEventListener('click', function(event) {
@@ -27,14 +25,15 @@ function startQuiz() {
         startButton.setAttribute(
             "style",
             "display: none;"
-        )
+        );
         timer();
         newQuestion();
     });    
 }
 
-function newQuestion() {
+startQuiz()
 
+function newQuestion() {
     questionOl.textContent = ''; 
     var currentQuestion = allQuestions[questionCount];
     questionH2.textContent = currentQuestion.q;
@@ -49,7 +48,12 @@ function newQuestion() {
             event.preventDefault();
 
             if (this.textContent === currentQuestion.correct) {
-                userTotal = userTotal + 10;
+                userTotal += 10;
+            }
+
+            if (this.textContent !== currentQuestion.correct) {
+                userTotal -= 10;
+                timeLeft -= 10;
             }
 
             if (questionCount < allQuestions.length - 1) {
@@ -78,6 +82,10 @@ function showScores() {
 
     var storedScores = JSON.parse(localStorage.getItem("userScore") || "[]");
 
+    storedScores.sort(function(a,b) {
+        return b.score - a.score;
+    })
+
     if (storedScores.length > 0) {
         // Add each score to a list
         for (var i = 0; i < storedScores.length; i++) {
@@ -91,15 +99,18 @@ function showScores() {
         highscores.textContent = "No high scores yet.";
     }
 
+    questionP.textContent = ""; // Clear any text
+
     // Show user's most recent score
-    questionP.textContent = "Your latest score: " + userTotal;
-    clearScoresButton.addEventListener("click", function() {
-        localStorage.removeItem("userScore");
-        highscores.textContent = "No high scores yet.";
-    })
+    // questionP.textContent = "Your latest score: " + userTotal;
+
 
 }
 
+clearScoresButton.addEventListener("click", function() {
+    localStorage.removeItem("userScore");
+    highscores.textContent = "No high scores yet.";
+})
 
 function submitScore() {
     submit.addEventListener("click", function(event) {
@@ -116,10 +127,7 @@ function submitScore() {
             score: userTotal,
         };
 
-        var storedScoresString = localStorage.getItem("userScore");
-        var storedScores = storedScoresString ? JSON.parse(storedScoresString) : [];
-
-
+        var storedScores = JSON.parse(localStorage.getItem("userScore") || "[]");
         storedScores.push(newScore);
         localStorage.setItem("userScore", JSON.stringify(storedScores));
 
@@ -128,7 +136,7 @@ function submitScore() {
 }
 
 function timer() {
-    timeLeft = 30;
+    timeLeft = 10;
 
     timerSpan.textContent = timeLeft;
 
@@ -141,7 +149,11 @@ function timer() {
             timerSpan.textContent = '0';
             questionH2.textContent = "Time's up!";
             questionOl.style.display = "none";
+            clearScoresButton.style.display = "none";
             form.style.display = "block";
+            submitScore();
+            startButton.style.display = "block";
+            startButton.textContent = "Try Again";
         }
     }, 1000);
 }
