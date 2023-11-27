@@ -1,3 +1,4 @@
+// Declare all html elements and counters globally
 var questionEl = document.querySelector('.question');
 var questionH2 = questionEl.querySelector(':scope > h2');
 var questionOl = document.querySelector('#questionOl');
@@ -22,14 +23,13 @@ clearScoresButton.style.display = "none";
 viewHighScoresButton.style.display = "none";
 highscoresAfterGame.style.display = "none";
 goHome.style.display = "none";
-viewHighScores.addEventListener("click", showScores);
-viewHighScoresButton.addEventListener("click", showScores);
+viewHighScores.addEventListener("click", showScores); // the button at the top of the home
+viewHighScoresButton.addEventListener("click", showScores); // the button at the end of the quiz
 
-
+// Global 'Go Home' button rather than call functions within functions
 goHome.addEventListener('click', function(event) {
     location.reload();
 })
-
 
 function startQuiz() {
     startButton.addEventListener('click', function(event) {
@@ -38,34 +38,36 @@ function startQuiz() {
         startButton.setAttribute(
             "style",
             "display: none;"
-        );
-        timer();
-        newQuestion();
+        ); // using setAttribute instead of style.display just for practice
+        timer(); // start timer
+        newQuestion(); // start the questions function
     });    
 }
-
 startQuiz()
 
 function newQuestion() {
-    
     clearScoresButton.style.display = "none";
     questionOl.textContent = '';
     questionP.textContent = ''; 
-    var currentQuestion = allQuestions[questionCount];
-    questionH2.textContent = currentQuestion.q;
-    var answers = [currentQuestion.a1, currentQuestion.a2, currentQuestion.a3, currentQuestion.a4];
+    var currentQuestion = allQuestions[questionCount]; // [questionCount] is the index
+    questionH2.textContent = currentQuestion.q; // sets each object question into the H2 element
+    var answers = [currentQuestion.a1, currentQuestion.a2, currentQuestion.a3, currentQuestion.a4]; // depends on objects having only 4 answers, but could add more later
 
+    // For loop to get object answer, create LI element, and append to the parent OL
     for (var i = 0; i < answers.length; i++) {
         var listItem = document.createElement("li");
         listItem.textContent = answers[i];
         questionOl.appendChild(listItem);
 
+        // handle the answer select via cursor
         listItem.addEventListener('click', function(event) { 
             event.preventDefault();
 
+            // my favorite lesson from this project is using 'this.textContent' to grab whatever the cursor clicks
             if (this.textContent === currentQuestion.correct) {
                 userTotal += 10;
-                questionP.textContent = "Correct!"    
+                timeLeft += 10;
+                questionP.textContent = "Correct!"; 
             }
 
             if (this.textContent !== currentQuestion.correct) {
@@ -74,6 +76,7 @@ function newQuestion() {
                 questionP.textContent = "Wrong!"
             }
 
+            // waits 1 second to show correct/wrong message, and then grabs the next question and answer object
             if (questionCount < allQuestions.length - 1) {
                 questionCount++;
                 setTimeout(function() {
@@ -87,9 +90,9 @@ function newQuestion() {
                     userTotal = userTotal + timeTally;
                     questionP.textContent = "Your final score is " + userTotal + ".";
                     questionOl.style.display = "none";
-                    form.style.display = "block";
-                    submitScore();
-                }, 1000);
+                    form.style.display = "block"; // show the initials form
+                    submitScore(); // calls the 
+                }, 1000); // time delay so the final question/answer will also show correct/wrong message
                 }
             });
     }
@@ -100,6 +103,7 @@ function submitScore() {
     submit.addEventListener("click", function(event) {
         event.preventDefault();
 
+        // html form input is set to max 3 characters
         var initials = document.querySelector("#initials").value.toUpperCase().trim();
         if (!initials) {
             alert("Please enter your initials!");
@@ -111,13 +115,12 @@ function submitScore() {
             score: userTotal,
         };
 
-        var storedScores = JSON.parse(localStorage.getItem("userScore") || "[]");
-        storedScores.push(newScore);
-        localStorage.setItem("userScore", JSON.stringify(storedScores));
-        console.log("stored scores at time of submission", storedScores);
+        var storedScores = JSON.parse(localStorage.getItem("userScore") || "[]"); // first gets the local storage array for userScore. If none exist, creates array.
+        storedScores.push(newScore); // adds the new score to the array
+        localStorage.setItem("userScore", JSON.stringify(storedScores)); // stringifies for the local storage
         form.style.display = "none";
-        questionP.textContent = "Thanks for playing! Click below to see how you did compared to others."
-        viewHighScoresButton.style.display = "block";
+        questionP.textContent = "Thanks for playing! Click below to see how you did compared to others."; 
+        viewHighScoresButton.style.display = "block"; // Showing button instead of default showing high scores to prevent cache and display issues
         goHome.style.display = "block";
     });
 }
@@ -131,13 +134,11 @@ function showScores() {
     highscoresAfterGame.textContent = "";
     highscoresAfterGame.style.display = "block";
 
-    // Get scores from localStorage
-
-    var storedScores = JSON.parse(localStorage.getItem("userScore") || "[]");
+    var storedScores = JSON.parse(localStorage.getItem("userScore") || "[]"); // Get scores from localStorage
 
     storedScores.sort(function(a,b) {
         return b.score - a.score;
-    })
+    }); // sorts the scores
 
     if (storedScores.length > 0) {
         // Add each score to a list
@@ -148,37 +149,31 @@ function showScores() {
             highscores.appendChild(scoreItem);
             highscoresAfterGame.appendChild(scoreItem);
         }
-        clearScoresButton.style.display = "block";
+        clearScoresButton.style.display = "block"; // show clear score button here
     } else {
         highscoresAfterGame.textContent = "No high scores yet.";
     }
     viewHighScoresButton.style.display = "none";
     startButton.style.display = "none";
     questionP.style.display = "none";
-    goHome.style.display = "block";
-
-    // Show user's most recent score
-    // questionP.textContent = "Your latest score: " + userTotal;
-
-
+    goHome.style.display = "block"; // using the Go Home button rather than a restart quiz button to prevent display and cache issues
 }
 
+// global event listener for the clear scores button, but showing/hiding via style.display
 clearScoresButton.addEventListener("click", function() {
     localStorage.removeItem("userScore");
     location.reload();
 })
 
-
-
 function timer() {
-    timeLeft = 20;
-
-    timerSpan.textContent = timeLeft;
+    timeLeft = 60;
+    timerSpan.textContent = timeLeft; // show the time left on the page
 
     timeInterval = setInterval(function() {
         timeLeft--;
         timerSpan.textContent = timeLeft;
 
+        // handles what to do when time is up mid-game
         if (timeLeft <= 0) {
             clearInterval(timeInterval);
             timerSpan.textContent = '0';
@@ -193,6 +188,7 @@ function timer() {
     }, 1000);
 }
 
+// All the question objects below
 var question1 = {
     q: "Commonly used data types DO NOT include:",
     a1: "strings",
@@ -238,5 +234,5 @@ var question5 = {
     correct: "console log",
 }
 
-var allQuestions = [question1, question2, question3, question4, question5];
+var allQuestions = [question1, question2, question3, question4, question5]; // array for all the questions
 

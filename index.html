@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Code Quiz</title>
 </head>
 <body>
@@ -16,9 +16,10 @@
         </section>
         <section class="question">
             <h2>Coding Quiz Challenge</h2>
-            <p class="intro-text">Try to answer the following code-related questions within the time limit.<br><br>
-                Correct answers receive 10 points, and the total time left will be added to the final score.<br><br>
-                Incorrect answers will penalize your score by 10 points, and your time left will be reduced 10 seconds.</p>
+            <p class="intro-text">Try to answer the following code-related questions within 60 seconds.<br><br>
+                Each correct answers gets 10 points, and 10 seconds added to the clock.<br><br>
+                Incorrect answers lose 10 points, and 10 seconds removed from the clock.<br><br>
+                At the end of the quiz, any remaining time is added to your total score.</p>
 
             <ol id="highscores"></ol>
             <ol id="highscores-aftergame"></ol>
@@ -26,7 +27,6 @@
             <button id="clearscores">Clear Scores</button>
             <button id="start">Begin Quiz</button>
             <button id="showscore">See High Scores</button>
-
 
             <form class="form">
                 <label for="initials">Enter Initials:</label>
@@ -38,9 +38,7 @@
 
         </section>
 
-
-
     </main>
-    <script src="script.js"></script>
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>
